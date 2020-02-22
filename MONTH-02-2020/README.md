@@ -6,7 +6,7 @@
 | Idea                          | Status        | When  |
 | ----------------------------- |:-------------:|:-----:|
 | Bin2Dec                       | done          | 21    |
-| Border Radius Previewer       | pending       |       |
+| Border Radius Previewer       | done          | 22    |
 | Boolean State Visualizer      | pending       |       |
 | Countdown                     | pending       |       |
 | Keyboard Visualizer           | pending       |       |

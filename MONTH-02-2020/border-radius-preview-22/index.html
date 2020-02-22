@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Border Radius Preview - Dev Challenge</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style>
+        #preview {
+            width: 256px;
+            height: 256px;
+            background: gray;
+            align-content: center;
+            justify-content: center;
+            justify-items: center;
+            align-items: center;
+            margin: 25px;
+
+            transition: border-radius .08s;
+        }
+
+        main {
+            align-content: center;
+            justify-content: center;
+            justify-items: center;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+
+<h3 class="text-center text-uppercase">Border Radius</h3>
+<main class="container d-flex">
+    <section>
+        <div id="preview" class="d-flex">
+            <p>
+                Border Radius Preview Box
+            </p>
+        </div>
+    </section>
+
+    <section class="col-4">
+        <div class="form-group">
+            <label for="rangeTopLeft">Top Left: <span id="spanTopLeft"></span></label>
+            <input type="text" class="form-text" id="rangeTopLeft" value="0" min="0" max="0">
+        </div>
+        <div class="form-group">
+            <label for="rangeTopRight">Top Right: <span id="spanTopRight"></span></label>
+            <input type="text" class="form-text" id="rangeTopRight" value="0" min="0" max="0">
+        </div>
+        <div class="form-group">
+            <label for="rangeBottomLeft">Bottom Left: <span id="spanBottomLeft"></span></label>
+            <input type="text" class="form-text" id="rangeBottomLeft" value="0" min="0" max="0">
+        </div>
+        <div class="form-group">
+            <label for="rangeBottomRight">Bottom Right: <span id="spanBottomRight"></span></label>
+            <input type="text" class="form-text" id="rangeBottomRight" value="0" min="0" max="0">
+        </div>
+
+        <div class="form-group">
+            <label for="unitTypeSelect">CSS Unit</label>
+            <select id="unitTypeSelect" class="form-control"></select>
+        </div>
+    </section>
+</main>
+<script>
+    const inputs = {
+        top: {
+            left: document.querySelector('#rangeTopLeft'),
+            right: document.querySelector('#rangeTopRight')
+        },
+        bottom: {
+            left: document.querySelector('#rangeBottomLeft'),
+            right: document.querySelector('#rangeBottomRight')
+        }
+    };
+
+    const spans = {
+        top: {
+            left: document.querySelector('#spanTopLeft'),
+            right: document.querySelector('#spanTopRight')
+        },
+        bottom: {
+            left: document.querySelector('#spanBottomLeft'),
+            right: document.querySelector('#spanBottomRight')
+        }
+    };
+
+    const inputUnit = document.querySelector("#unitTypeSelect");
+
+    const preview = document.querySelector('#preview');
+    const updateInterval = 5;
+    const validUnits = [
+        "cm", "mm", "in", "px", "pt", "pc",
+        "em", "ex", "ch", "rem", "vw", "vh",
+        "vmin", "vmax", "%"
+    ];
+
+    validUnits.forEach(unit => {
+        inputUnit.innerHTML = `${inputUnit.innerHTML}\r\n<option>${unit}</option>`;
+    });
+
+    inputUnit.value = "px";
+
+    setInterval(() => {
+        const unit = inputUnit.value;
+        const searchIndex = validUnits.findIndex(vUnit => unit === vUnit);
+
+        if (searchIndex !== -1) {
+
+            const tl = `${inputs.top.left.value}${unit}`;
+            const tr = `${inputs.top.right.value}${unit}`;
+            const bl = `${inputs.bottom.left.value}${unit}`;
+            const br = `${inputs.bottom.right.value}${unit}`;
+
+            preview.style.borderRadius = `${tl} ${tr} ${br} ${bl}`;
+
+            spans.top.left.innerHTML = tl;
+
+            spans.top.right.innerHTML = tr;
+
+            spans.bottom.left.innerHTML = bl;
+
+            spans.bottom.right.innerHTML = br;
+        }
+
+    }, updateInterval);
+</script>
+</body>
+</html>
