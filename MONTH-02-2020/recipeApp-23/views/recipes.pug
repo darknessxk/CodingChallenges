@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  h1 Recipes List
+  p.lead Choose one and try at your kitchen right now!
+  hr.row
+  each recipe in recipes
+    div
+    .col-sm-3
+      h2 #{recipe.name}
+      img(src=`${recipe.imageUrl}`, width="128px")
+      a.btn.btn-secondary(href=`/recipe/${recipe.creationHash}`, role='button') View details »
