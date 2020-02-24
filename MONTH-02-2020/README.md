@@ -7,9 +7,9 @@
 | ----------------------------- |:-------------:|:-----:|
 | Bin2Dec                       | done          | 21    |
 | Border Radius Previewer       | done          | 22    |
-| Boolean State Visualizer      | pending       |       |
+| Boolean State Visualizer      | done          | 24    |
 | Countdown                     | pending       |       |
 | Keyboard Visualizer           | pending       |       |
 | Word Frequency in a Text      | pending       |       |
-| Recipe App                    | pending       |       |
+| Recipe App                    | done          | 23    |
 | Auto-generated Christmas tree | pending       |       |

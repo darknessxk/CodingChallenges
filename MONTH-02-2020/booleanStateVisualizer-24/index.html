@@ -1,0 +1,89 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Boolean State Visualizer</title>
+
+        <!-- Style Stuff -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    </head>
+    <body class="container">
+        <h2>Boolean State Visualizer</h2>
+        <div>
+            <h4>Values</h4>
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" id="xSwitch">
+                <label class="custom-control-label" for="xSwitch">X Value</label>
+            </div>
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" id="ySwitch">
+                <label class="custom-control-label" for="ySwitch">Y Value</label>
+            </div>
+        </div>
+        <hr />
+
+        
+        <div id="resultsPreview">
+            
+        </div>
+    </body>
+
+    <script>
+        //ye im lazy today and pretty depressed :/
+        function cykablyat() {
+            const xSwitch = document.querySelector("#xSwitch");
+            const ySwitch = document.querySelector("#ySwitch");
+            const resultsPreview = document.querySelector("#resultsPreview");
+
+            const generateSwitch = (checked, lbl, id) => {
+                const customControl = document.createElement("div");
+                customControl.classList.add("custom-control", "custom-switch");
+
+                const input = document.createElement("input");
+                input.classList.add("custom-control-input");
+                input.type = "checkbox";
+                input.id = id;
+                input.checked = checked;
+
+                const label = document.createElement("label");
+                label.classList.add("custom-control-label");
+
+                label.innerText = lbl;
+                label.setAttribute("for", id);
+
+                customControl.appendChild(input);
+                customControl.appendChild(label);
+
+                return customControl;
+            }
+
+            const logicGates = {
+                xor: (a, b) => {
+                    if (a && b)
+                        return false;
+                    return true;
+                },
+                or: (a, b) => a || b,
+                and: (a, b) => a && b,
+                nor: (a, b) => !(a || b),
+                nand: (a, b) => !(a && b),
+                not: (a) => !a
+            }
+
+            setInterval(() => {
+                resultsPreview.innerHTML = "";
+                
+                for (const gate in logicGates) {
+                    if (logicGates.hasOwnProperty(gate)) {
+                        const fn = logicGates[gate].call(null, xSwitch.checked, ySwitch.checked);
+
+                        resultsPreview.appendChild(generateSwitch(fn, `${gate} gate`, `gateId_${gate}`))
+                    }
+                }
+
+            }, 10);
+        }
+
+
+        window.onload = cykablyat;
+    </script>
+</html>
