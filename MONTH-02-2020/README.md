@@ -10,6 +10,6 @@
 | Boolean State Visualizer      | done          | 24    |
 | Countdown                     | pending       |       |
 | Keyboard Visualizer           | pending       |       |
-| Word Frequency in a Text      | pending       |       |
+| Word Frequency in a Text      | done          | 25    |
 | Recipe App                    | done          | 23    |
 | Auto-generated Christmas tree | pending       |       |
