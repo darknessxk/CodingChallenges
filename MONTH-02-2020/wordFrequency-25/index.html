@@ -1,0 +1,141 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Word Frequency in Text</title>
+
+        <!-- Style Stuff -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    </head>
+    <body>
+        <main class="container">
+            <h2>Word Frequency in Text</h2>
+            <section>
+                <div class="form-group">
+                    <label for="textBox">Text</label>
+                    <textarea class="form-control" id="textBox" rows="3"></textarea>
+                </div>
+            </section>
+            <hr />
+
+            
+            <section>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Word</th>
+                            <th id="orderByBtn">Count [order by <span id="orderByLbl"></span>]</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="visualizationLst"></tbody>
+                </table>
+            </section>
+        </main>
+    </body>
+
+    <script>
+        // hello mother duckers
+        let orderBy = "";
+        let showOnce = true;
+
+        const showOnceMsg = (...msg) => {
+            if (showOnce) {
+                console.log(...msg);
+                showOnce = false;
+            }
+        }
+
+        let comparefn = {
+            "desc": (a, b, list) => list[a] - list[b],
+            "asc": (a, b, list) => list[b] - list[a]
+        }
+
+        function objSort(objectList, comparefn) {
+            const newObject = {};
+            const wordOrder = Object.keys(objectList).sort((a, b) => comparefn(a, b, objectList));
+
+            showOnceMsg(wordOrder);
+
+            wordOrder.forEach(word => newObject[word] = objectList[word]);
+            return newObject;
+        }
+
+        function changeOrder() {
+            if (orderBy === "")
+                orderBy = "desc";
+            else if (orderBy === "desc")
+                orderBy = "asc"
+            else
+                orderBy = "";
+
+            showOnce = true;
+        }
+
+        function cykablyat() {
+            const textbox = document.querySelector("#textBox");
+            const visualizationLst = document.querySelector("#visualizationLst");
+            const orderByLbl = document.querySelector("#orderByLbl");
+            const strBlacklist = ["", "/", "\\"];
+
+            document.querySelector("#orderByBtn").addEventListener("click", () => changeOrder());
+
+            setInterval(() => {
+                orderByLbl.innerText = orderBy === "" ? "nothing" : orderBy;
+
+                let wordList = {};
+                const textValue = textbox.value
+                .trim()
+                .replace(/(\r\n\t|\n|\r\t)/gm, " ")
+                .replace("e.g", "eg")
+                .trim();
+
+                textValue.split(/( |,|\.|\\|\/)/g).forEach(word => {
+                    switch (word) {
+                        case " ":
+                            word = "Whitespace";
+                            break;
+                        case ",":
+                            word = "Comma";
+                            break;
+                        case ".":
+                            word = "Line ending";
+                            break;
+                    }
+
+                    if (strBlacklist.find(b => b === word) === undefined) {
+                        word = word.replace(/(\(|\)|\[|\])/g, "");
+
+                        if (wordList[word] === undefined)
+                            wordList[word] = 1;
+                        else
+                            wordList[word]++;
+                    }
+                });
+
+                visualizationLst.innerHTML = '';
+
+                if (orderBy !== "")
+                    wordList = objSort(wordList, comparefn[orderBy].bind(this));
+
+                Object.keys(wordList).forEach(wordKey => {
+                    const wordCount = wordList[wordKey];
+                        
+                    const tr = document.createElement("tr");
+                    const td_word = document.createElement("td");
+                    const td_count = document.createElement("td");
+
+                    td_word.innerText = wordKey;
+                    td_count.innerText = wordCount;
+
+                    tr.appendChild(td_word);
+                    tr.appendChild(td_count);
+
+                    visualizationLst.appendChild(tr);
+                })
+            }, 120);
+        }
+
+
+        window.onload = cykablyat;
+    </script>
+</html>
