@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Countdown</title>
+
+        <!-- Style Stuff -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    </head>
+    <body>
+        <main class="container">
+            <h2>Countdown</h2>
+
+            <section>
+                <div class="form-group">
+                    <label for="dateValue">Target Date</label>
+                    <input type="date" id="dateValue" />
+                </div>
+            </section>
+
+            <hr />
+
+            
+            <section>
+                Time until your selected date <span id="visualizationLst"></span>
+            </section>
+        </main>
+    </body>
+
+    <script>
+        // hello mother snuggers
+        const dateValue = document.querySelector("#dateValue");
+        const visualizationLst = document.querySelector("#visualizationLst");
+
+        function cykablyat() {
+            setInterval(() => {
+                const targetTime = dateValue.valueAsDate.getTime();
+                const currentTime = new Date().getTime();
+
+                const difference = targetTime - currentTime;
+
+                const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+                visualizationLst.innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+
+                if (distance < 0) {
+                    visualizationLst.innerHTML = "!!!Time has come!!!";
+                }
+
+            }, 100); // 100 ms is good enough lol
+        }
+
+
+        window.onload = cykablyat;
+    </script>
+</html>

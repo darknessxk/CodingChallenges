@@ -8,7 +8,7 @@
 | Bin2Dec                       | done          | 21    |
 | Border Radius Previewer       | done          | 22    |
 | Boolean State Visualizer      | done          | 24    |
-| Countdown                     | pending       |       |
+| Countdown                     | done          | 26    |
 | Keyboard Visualizer           | pending       |       |
 | Word Frequency in a Text      | done          | 25    |
 | Recipe App                    | done          | 23    |
