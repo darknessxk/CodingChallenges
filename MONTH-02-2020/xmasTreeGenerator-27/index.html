@@ -1,0 +1,154 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Christmas Tree Generator</title>
+
+        <!-- Style Stuff -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    </head>
+    <body>
+        <main class="container">
+            <canvas id="visualization" width="512" height="512"></canvas>
+        </main>
+    </body>
+
+    <script>
+        // hello mother lovers and i know u all got it
+        const sizeValue = document.querySelector("#sizeValue");
+
+        // RENDER
+        const canvas = document.querySelector("#visualization");
+        const ctx = canvas.getContext('2d');
+
+        // VARS
+        const treeColor = "#65961A";
+        const treeTrunkColor = "brown";
+        const lightRadius = 4;
+        const lightColors = [
+            "red", "blue", "yellow", "lightblue", "darkblue", "wine", "orange"
+        ];
+        let treePath = undefined;
+        let lightsPathArr = [];
+        let tickCount = 0;
+        
+        function drawTree(ctx, color, path) {
+            ctx.lineWidth = 5;
+
+            ctx.fillStyle = color;
+            ctx.strokeStyle = color;
+
+            ctx.fill(path);
+        }
+
+        function createTreePart(baseX, baseY, hLimit, vLimit, color, path) {
+            // left edge
+            path.moveTo(
+                baseX + 50 + hLimit + (vLimit / 4.25),
+                baseY + 140
+            );
+
+            // top middle
+            path.lineTo(
+                baseX + 150,
+                baseY + 60 - (hLimit / 4.25) + vLimit
+            );
+
+            // right edge
+            path.lineTo(
+                baseX + 250 - hLimit - (vLimit / 4.25),
+                baseY + 140
+            );
+
+            return {
+                xMiddle: (baseX + 250 - hLimit - (vLimit / 4.25)) / 2,
+
+                yMiddle: (baseY + 140) / 2,
+                top: baseY + 60 - (hLimit / 4.25) + vLimit,
+                bottom: baseY + 140,
+            }
+        }
+
+        function generateLightsPath(lightCount, tBase, yOffset = 0) {
+
+            const paths = [];
+
+            const xBase = tBase.xMiddle;
+            const yBase = tBase.top + yOffset;
+
+            console.log(tBase);
+
+            for (let index = 0; index < lightCount; index++) {
+                const path = new Path2D();
+                const x = (Math.random() * 80) + xBase;
+                const y = (Math.random() * 25) + yBase;
+                
+                path.arc(x, y, lightRadius, 0, 2 * Math.PI);
+                
+                paths.push(path);
+            }
+
+            return paths;
+        }
+
+        function createTree() {
+            const path = new Path2D();
+
+            lightsPathArr.push(
+                ...generateLightsPath(6, 
+                createTreePart(0, 0, 30, 0, treeColor, path),
+                50)
+            );
+
+            lightsPathArr.push(
+                ...generateLightsPath(6, 
+                createTreePart(0, 50, 25, 0, treeColor, path),
+                50)
+            );
+
+            lightsPathArr.push(
+                ...generateLightsPath(6, 
+                createTreePart(0, 100, 25, 0, treeColor, path),
+                50)
+            );
+
+            return path;
+        }
+
+        function drawBlinkingLight(ctx, path, colors) {
+            ctx.beginPath();
+            
+            ctx.fillStyle = colors[Math.floor(Math.random() * colors.length)];
+            
+            ctx.fill(path);
+        }
+
+        const updateInterval = 12;
+        let lastUpdate = 0;
+        function cykablyat() {
+            tickCount++;
+
+            if (lastUpdate === 0 || lastUpdate < tickCount)
+            {
+                ctx.fillStyle = "#FFFFFF";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                drawTree(ctx, treeColor, treePath);
+
+                ctx.fillStyle = treeTrunkColor;
+                ctx.fillRect(140, 242, 20, 50);
+
+                lightsPathArr.forEach(light => drawBlinkingLight(ctx, light, lightColors))
+
+                lastUpdate = tickCount + updateInterval;
+            }
+            requestAnimationFrame(cykablyat);
+        }
+
+        function hidinahui() {
+            treePath = createTree();
+            requestAnimationFrame(cykablyat);
+        }
+
+        window.onload = hidinahui;
+    </script>
+</html>
